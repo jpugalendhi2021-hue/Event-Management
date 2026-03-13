@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easwari Engineering College — Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep-blue: #0a1628;
+  --indigo: #1e3a8a;
+  --indigo-mid: #2d52b0;
+  --teal: #0d9488;
+  --teal-light: #14b8a6;
+  --glass-bg: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-hover: rgba(255,255,255,0.10);
+  --text-primary: #f1f5f9;
+  --text-secondary: rgba(241,245,249,0.65);
+  --text-muted: rgba(241,245,249,0.4);
+  --accent: #14b8a6;
+  --accent-warm: #f59e0b;
+  --danger: #ef4444;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--deep-blue);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== MESH BACKGROUND ========== */
+.mesh-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(30,58,138,0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 90% 80%, rgba(13,148,136,0.5) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(45,82,176,0.3) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 10%, rgba(20,184,166,0.25) 0%, transparent 50%),
+    #0a1628;
+  animation: meshShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes meshShift {
+  0% { background-position: 0% 0%, 100% 100%, 50% 50%, 80% 10%; }
+  100% { background-position: 5% 5%, 95% 95%, 52% 48%, 82% 12%; }
+}
+
+.mesh-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ========== LAYOUT ========== */
+#app { position: relative; z-index: 1; }
+
+/* ========== NAV ========== */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(10,22,40,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--teal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.nav-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.nav-name span { color: var(--teal-light); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.nav-link:hover { color: var(--text-primary); background: var(--glass-bg); }
+
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+
+.btn-login {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-login:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.25); }
+
+.btn-login.logged-in {
+  border-color: rgba(20,184,166,0.4);
+  color: var(--teal-light);
+}
+
+/* ========== HERO ========== */
+.hero {
+  padding: 100px 40px 80px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(20,184,166,0.12);
+  border: 1px solid rgba(20,184,166,0.3);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--teal-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.hero h1 .highlight {
+  background: linear-gradient(120deg, #38bdf8, var(--teal-light), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary {
+  padding: 14px 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--teal));
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+}
+
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13,148,136,0.35); }
+
+.btn-outline {
+  padding: 14px 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline:hover { background: var(--glass-bg); border-color: rgba(255,255,255,0.25); }
+
+/* ========== SEARCH + STATS BAR ========== */
+.toolbar {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+}
+
+.search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-input::placeholder { color: var(--text-muted); }
+.search-input:focus { border-color: rgba(20,184,166,0.5); background: rgba(255,255,255,0.09); }
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.stat-pill strong { color: var(--text-primary); font-weight: 600; }
+
+/* ========== SECTION ========== */
+.section {
+  max-width: 1200px;
+  margin: 0 auto 70px;
+  padding: 0 40px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.section-badge {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.badge-internal {
+  background: rgba(30,58,138,0.35);
+  border: 1px solid rgba(59,130,246,0.3);
+  color: #93c5fd;
+}
+
+.badge-external {
+  background: rgba(13,148,136,0.25);
+  border: 1px solid rgba(20,184,166,0.3);
+  color: var(--teal-light);
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--glass-border), transparent);
+}
+
+/* ========== TABS ========== */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 8px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover { color: var(--text-primary); background: var(--glass-bg); }
+
+.tab-btn.active {
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+.tab-btn.active[data-cat="technical"] { border-color: rgba(59,130,246,0.5); color: #93c5fd; }
+.tab-btn.active[data-cat="non-technical"] { border-color: rgba(167,139,250,0.5); color: #c4b5fd; }
+.tab-btn.active[data-cat="workshop"] { border-color: rgba(20,184,166,0.5); color: var(--teal-light); }
+
+/* ========== EVENTS GRID ========== */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+/* ========== EVENT CARD ========== */
+.event-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card:hover {
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.09);
+}
+
+.card-banner {
+  height: 140px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.card-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.5));
+}
+
+.banner-technical { background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%); }
+.banner-non-technical { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%); }
+.banner-workshop { background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%); }
+.banner-sports { background: linear-gradient(135deg, #064e3b 0%, #059669 100%); }
+.banner-cultural { background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%); }
+.banner-hackathon { background: linear-gradient(135deg, #78350f 0%, #d97706 100%); }
+
+.banner-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-cat-pill {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.card-meta-item svg { flex-shrink: 0; }
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-register {
+  flex: 1;
+  padding: 10px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--teal));
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-register:hover { opacity: 0.9; transform: scale(1.02); }
+
+.btn-details {
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-details:hover { background: var(--glass-bg); color: var(--text-primary); }
+
+.no-events {
+  grid-column: 1 / -1;
+  padding: 50px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ========== AUTH MODAL ========== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background: rgba(10,22,40,0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 460px;
+  overflow: hidden;
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-top {
+  padding: 28px 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.modal-tab {
+  padding: 8px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-tab.active {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.1);
+}
+
+.modal-close {
+  width: 32px; height: 32px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-close:hover { color: var(--text-primary); background: rgba(255,255,255,0.12); }
+
+.modal-body { padding: 24px 28px 28px; }
+
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.form-group { margin-bottom: 16px; }
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-input::placeholder { color: var(--text-muted); }
+.form-input:focus { border-color: rgba(20,184,166,0.6); background: rgba(255,255,255,0.09); }
+
+.form-error {
+  font-size: 12px;
+  color: #f87171;
+  margin-top: 6px;
+  display: none;
+}
+
+.form-submit {
+  width: 100%;
+  padding: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--teal));
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 8px;
+}
+
+.form-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(13,148,136,0.35); }
+
+/* ========== EVENT DETAIL MODAL ========== */
+.detail-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 30px 20px;
+  overflow-y: auto;
+}
+
+.detail-modal-overlay.open { display: flex; }
+
+.detail-modal-box {
+  background: rgba(10,22,40,0.97);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 640px;
+  overflow: hidden;
+  animation: modalIn 0.3s ease;
+  margin: auto;
+}
+
+.detail-banner {
+  height: 180px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+}
+
+.detail-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(10,22,40,0.8));
+}
+
+.detail-banner-text {
+  position: relative;
+  z-index: 1;
+}
+
+.detail-cat-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(0,0,0,0.4);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-bottom: 8px;
+}
+
+.detail-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
+}
+
+.detail-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 34px; height: 34px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-body { padding: 28px; }
+
+.detail-desc {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+}
+
+.detail-item svg { flex-shrink: 0; margin-top: 2px; }
+
+.detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  font-size: 13.5px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.detail-organizer {
+  padding: 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.organizer-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--teal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.organizer-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.organizer-email {
+  font-size: 12.5px;
+  color: var(--teal-light);
+}
+
+.detail-register-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--teal));
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.detail-register-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13,148,136,0.35); }
+
+/* ========== TOAST ========== */
+.toast-wrap {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 600;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  backdrop-filter: blur(12px);
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.toast.visible { opacity: 1; transform: translateY(0); }
+.toast.success { background: rgba(6,78,59,0.9); border-color: rgba(20,184,166,0.4); }
+.toast.error { background: rgba(127,29,29,0.9); border-color: rgba(239,68,68,0.4); }
+.toast.info { background: rgba(30,58,138,0.9); border-color: rgba(59,130,246,0.4); }
+
+/* ========== FOOTER ========== */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--glass-border);
+  padding: 50px 40px 30px;
+  background: rgba(0,0,0,0.2);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 40px;
+}
+
+.footer-brand-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.footer-tagline {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.footer-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-link { font-size: 13.5px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+.footer-link:hover { color: var(--teal-light); }
+
+.footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 20px 50px; }
+  .toolbar, .section { padding: 0 20px; }
+  .events-grid { grid-template-columns: 1fr; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; gap: 30px; padding: 0 20px; }
+  footer { padding: 40px 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="mesh-bg"></div>
+<div class="mesh-noise"></div>
+
+<div id="app">
+
+<!-- ========== NAV ========== -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">EEC</div>
+    <div class="nav-name">Easwari <span>Engineering</span>College</div>
+  </div>
+  <div class="nav-links">
+    <a href="#internal" class="nav-link">Internal</a>
+    <a href="#external" class="nav-link">External</a>
+    <a href="#footer" class="nav-link">Contact</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-login" id="navLoginBtn" onclick="openAuth()">Login / Sign Up</button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-eyebrow">Event Management Portal</div>
+  <h1>Where <span class="highlight">Ideas</span> Meet<br>Opportunity</h1>
+  <p class="hero-sub">Discover, register, and participate in events that shape your college experience at Easwari Engineering College.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="openAuth()">Get Started</button>
+    <a href="#internal" class="btn-outline">Browse Events</a>
+  </div>
+</section>
+
+<!-- ========== TOOLBAR ========== -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input class="search-input" type="text" id="searchInput" placeholder="Search events by name..." oninput="filterAll()">
+  </div>
+  <div class="stat-pill">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg>
+    <span><strong id="totalCount">0</strong> Events</span>
+  </div>
+</div>
+
+<!-- ========== INTERNAL EVENTS ========== -->
+<section class="section" id="internal">
+  <div class="section-header">
+    <span class="section-badge badge-internal">Internal</span>
+    <h2 class="section-title">Internal Events</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tabs" id="internalTabs">
+    <button class="tab-btn active" data-cat="all" onclick="switchTab('internal','all')">All</button>
+    <button class="tab-btn" data-cat="technical" onclick="switchTab('internal','technical')">Technical</button>
+    <button class="tab-btn" data-cat="non-technical" onclick="switchTab('internal','non-technical')">Non-Technical</button>
+    <button class="tab-btn" data-cat="workshop" onclick="switchTab('internal','workshop')">Workshops</button>
+  </div>
+  <div class="events-grid" id="internalGrid"></div>
+</section>
+
+<!-- ========== EXTERNAL EVENTS ========== -->
+<section class="section" id="external">
+  <div class="section-header">
+    <span class="section-badge badge-external">External</span>
+    <h2 class="section-title">External Events</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="tabs" id="externalTabs">
+    <button class="tab-btn active" data-cat="all" onclick="switchTab('external','all')">All</button>
+    <button class="tab-btn" data-cat="technical" onclick="switchTab('external','technical')">Technical</button>
+    <button class="tab-btn" data-cat="non-technical" onclick="switchTab('external','non-technical')">Non-Technical</button>
+    <button class="tab-btn" data-cat="workshop" onclick="switchTab('external','workshop')">Workshops</button>
+  </div>
+  <div class="events-grid" id="externalGrid"></div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">Easwari Engineering College</div>
+      <p class="footer-tagline">Empowering students through innovation, collaboration, and unforgettable events. Ramapuram, Chennai — Tamil Nadu.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Navigate</div>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Home</a>
+        <a href="#internal" class="footer-link">Internal Events</a>
+        <a href="#external" class="footer-link">External Events</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Contact</div>
+      <div class="footer-links">
+        <span class="footer-link">info@eec.edu.in</span>
+        <span class="footer-link">+91 44 1234 5678</span>
+        <span class="footer-link">Ramapuram, Chennai</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2025 Easwari Engineering College. All rights reserved.</div>
+</footer>
+
+</div><!-- /app -->
+
+<!-- ========== AUTH MODAL ========== -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-tabs">
+        <button class="modal-tab active" id="tabLogin" onclick="switchAuthTab('login')">Login</button>
+        <button class="modal-tab" id="tabSignup" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+      <button class="modal-close" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- LOGIN FORM -->
+      <div id="loginForm">
+        <div class="modal-title">Welcome back</div>
+        <div class="modal-sub">Sign in to your EEC Events account</div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com">
+          <div class="form-error" id="loginEmailErr">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="loginPassword" placeholder="••••••••">
+          <div class="form-error" id="loginPassErr">Password must be at least 6 characters.</div>
+        </div>
+        <button class="form-submit" onclick="handleLogin()">Login</button>
+      </div>
+      <!-- SIGNUP FORM -->
+      <div id="signupForm" style="display:none">
+        <div class="modal-title">Create account</div>
+        <div class="modal-sub">Join EEC Events and start registering</div>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="signupName" placeholder="Your full name">
+          <div class="form-error" id="signupNameErr">Please enter your full name.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" id="signupEmail" placeholder="you@example.com">
+          <div class="form-error" id="signupEmailErr">Please enter a valid email.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input class="form-input" type="text" id="signupUsername" placeholder="Choose a username">
+          <div class="form-error" id="signupUserErr">Username must be at least 3 characters.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="signupPassword" placeholder="Min. 6 characters">
+          <div class="form-error" id="signupPassErr">Password must be at least 6 characters.</div>
+        </div>
+        <button class="form-submit" onclick="handleSignup()">Create Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DETAIL MODAL ========== -->
+<div class="detail-modal-overlay" id="detailModal">
+  <div class="detail-modal-box">
+    <div class="detail-banner" id="detailBanner">
+      <button class="detail-close" onclick="closeDetail()">✕</button>
+      <div class="detail-banner-text">
+        <span class="detail-cat-badge" id="detailCatBadge">Category</span>
+        <div class="detail-title" id="detailTitle">Event Title</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <p class="detail-desc" id="detailDesc"></p>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-light)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <div><span class="detail-label">Date & Time</span><span class="detail-value" id="detailDate"></span></div>
+        </div>
+        <div class="detail-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-light)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><span class="detail-label">Venue</span><span class="detail-value" id="detailVenue"></span></div>
+        </div>
+        <div class="detail-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-light)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div><span class="detail-label">Max Participants</span><span class="detail-value" id="detailParticipants"></span></div>
+        </div>
+        <div class="detail-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div><span class="detail-label">Registration Deadline</span><span class="detail-value" id="detailDeadline"></span></div>
+        </div>
+      </div>
+      <div class="detail-organizer">
+        <div class="organizer-avatar" id="detailOrgInitials">OK</div>
+        <div>
+          <div class="organizer-name" id="detailOrgName"></div>
+          <div class="organizer-email" id="detailOrgContact"></div>
+        </div>
+      </div>
+      <a href="#" id="detailRegBtn" class="detail-register-btn" onclick="handleDetailRegister(event)">Register Now</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div class="toast-wrap">
+  <div class="toast" id="toast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Success</span>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const events = [
+  {
+    id: 1, audience: 'internal', category: 'technical',
+    title: "Tech Hackathon 2025",
+    description: "24-hour coding marathon where students build innovative solutions to real-world problems. Amazing prizes worth ₹50,000 to be won! Form your teams and get ready to code! This is your chance to collaborate, innovate, and make a real impact.",
+    date: "October 15, 2025", time: "09:00 AM",
+    venue: "Computer Science Block",
+    organizerName: "Dr. Priya Kumar", organizerContact: "priya.kumar@eec.edu.in",
+    registrationDeadline: "October 10, 2025", maxParticipants: 100,
+    registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSfNP58pkFl97pc7Fm1YVQgX159FWUGsovrlZadIOfBK_q5e8A/viewform?usp=header"
+  },
+  {
+    id: 2, audience: 'internal', category: 'non-technical',
+    title: "Annual Sports Meet",
+    description: "Inter-department sports competition featuring cricket, football, basketball, volleyball, and athletics. Show your sporting spirit and represent your department! Come together to celebrate fitness, teamwork, and college pride.",
+    date: "October 20, 2025", time: "07:00 AM",
+    venue: "College Grounds",
+    organizerName: "Prof. Rajesh Menon", organizerContact: "rajesh.m@eec.edu.in",
+    registrationDeadline: "October 12, 2025", maxParticipants: 200,
+    registrationLink: "https://forms.google.com/your-form-link-2"
+  },
+  {
+    id: 3, audience: 'internal', category: 'workshop',
+    title: "AI & ML Workshop",
+    description: "Comprehensive hands-on workshop covering fundamentals of Artificial Intelligence, Machine Learning algorithms, and practical implementation using Python and TensorFlow. Perfect for beginners and intermediate learners alike.",
+    date: "October 8, 2025", time: "10:00 AM",
+    venue: "Seminar Hall A",
+    organizerName: "Dr. Ananya Sharma", organizerContact: "ananya.s@eec.edu.in",
+    registrationDeadline: "October 5, 2025", maxParticipants: 60,
+    registrationLink: "https://forms.google.com/your-form-link-3"
+  },
+  {
+    id: 4, audience: 'internal', category: 'non-technical',
+    title: "Cultural Fest — Resonance",
+    description: "Three-day cultural extravaganza featuring music competitions, dance performances, drama, art exhibitions, fashion shows, and much more. Celebrate diversity and talent across all departments.",
+    date: "November 1, 2025", time: "09:00 AM",
+    venue: "Main Auditorium",
+    organizerName: "Ms. Lakshmi Nair", organizerContact: "lakshmi.n@eec.edu.in",
+    registrationDeadline: "October 25, 2025", maxParticipants: 300,
+    registrationLink: "https://forms.google.com/your-form-link-4"
+  },
+  {
+    id: 5, audience: 'internal', category: 'technical',
+    title: "Web Dev Bootcamp",
+    description: "Learn full-stack web development with React, Node.js, Express, and MongoDB in this intensive 3-day bootcamp. Build real-world projects and enhance your employability with industry-ready skills.",
+    date: "October 18, 2025", time: "09:30 AM",
+    venue: "IT Lab 2",
+    organizerName: "Prof. Suresh Kumar", organizerContact: "suresh.k@eec.edu.in",
+    registrationDeadline: "October 14, 2025", maxParticipants: 50,
+    registrationLink: "https://forms.google.com/your-form-link-5"
+  },
+  {
+    id: 6, audience: 'internal', category: 'workshop',
+    title: "Photography Workshop",
+    description: "Learn the art of photography from professionals. Topics include composition, lighting, editing, and storytelling through images. Bring your cameras — DSLR or smartphone both welcome!",
+    date: "October 12, 2025", time: "02:00 PM",
+    venue: "Media Lab",
+    organizerName: "Mr. Arun Prakash", organizerContact: "arun.p@eec.edu.in",
+    registrationDeadline: "October 8, 2025", maxParticipants: 40,
+    registrationLink: "https://forms.google.com/your-form-link-6"
+  },
+  {
+    id: 7, audience: 'external', category: 'technical',
+    title: "Smart India Hackathon",
+    description: "National-level hackathon where student teams solve complex problems posed by government ministries. Represents a great opportunity to work on real-world challenges with a direct impact on society.",
+    date: "December 5, 2025", time: "08:00 AM",
+    venue: "NIT Trichy (External Venue)",
+    organizerName: "AICTE — National Coord.", organizerContact: "sih2025@aicte-india.org",
+    registrationDeadline: "November 20, 2025", maxParticipants: 50,
+    registrationLink: "https://www.sih.gov.in/"
+  },
+  {
+    id: 8, audience: 'external', category: 'technical',
+    title: "IEEE YESIST12 Conference",
+    description: "International student conference on STEM innovation. Present your research, network with global peers, and get published in IEEE proceedings. Open to all final-year and postgraduate students.",
+    date: "November 15, 2025", time: "10:00 AM",
+    venue: "SRM University, Chennai",
+    organizerName: "IEEE Chennai Section", organizerContact: "yesist12@ieee-chennai.org",
+    registrationDeadline: "October 30, 2025", maxParticipants: 80,
+    registrationLink: "https://yesist12.org/"
+  },
+  {
+    id: 9, audience: 'external', category: 'non-technical',
+    title: "Inter-College Quiz Fest",
+    description: "Prestigious annual quiz competition hosted across Chennai colleges. Categories include science, literature, current affairs, and pop culture. Up to 3 teams of 2 from each institution can register.",
+    date: "October 25, 2025", time: "11:00 AM",
+    venue: "IIT Madras Fest Grounds",
+    organizerName: "Shaastra Committee", organizerContact: "shaastra.quiz@iitm.ac.in",
+    registrationDeadline: "October 18, 2025", maxParticipants: 120,
+    registrationLink: "https://shaastra.org/"
+  },
+  {
+    id: 10, audience: 'external', category: 'workshop',
+    title: "Data Science Conclave",
+    description: "Two-day intensive workshop by industry experts covering advanced data science topics: deep learning, NLP, computer vision, and ethical AI. Includes hands-on labs and industry case studies.",
+    date: "November 8, 2025", time: "09:00 AM",
+    venue: "Chennai Trade Centre",
+    organizerName: "Analytics Vidhya", organizerContact: "events@analyticsvidhya.com",
+    registrationDeadline: "November 1, 2025", maxParticipants: 200,
+    registrationLink: "https://analyticsvidhya.com/"
+  }
+];
+
+const categoryMeta = {
+  technical:     { icon: '💻', bannerClass: 'banner-technical',     label: 'Technical' },
+  'non-technical': { icon: '🎭', bannerClass: 'banner-cultural',    label: 'Non-Technical' },
+  workshop:      { icon: '🔬', bannerClass: 'banner-workshop',      label: 'Workshop' },
+  sports:        { icon: '⚽', bannerClass: 'banner-sports',        label: 'Sports' },
+  hackathon:     { icon: '🏆', bannerClass: 'banner-hackathon',     label: 'Hackathon' }
+};
+
+// ===== STATE =====
+let currentUser = null;
+let activeDetailLink = '#';
+const tabState = { internal: 'all', external: 'all' };
+
+// ===== AUTH =====
+function openAuth() {
+  document.getElementById('authModal').classList.add('open');
+}
+function closeAuth() {
+  document.getElementById('authModal').classList.remove('open');
+}
+function switchAuthTab(tab) {
+  document.getElementById('loginForm').style.display  = tab === 'login'  ? '' : 'none';
+  document.getElementById('signupForm').style.display = tab === 'signup' ? '' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+}
+
+function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+function showErr(id, show) {
+  document.getElementById(id).style.display = show ? 'block' : 'none';
+}
+
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPassword').value;
+  let ok = true;
+  if (!validateEmail(email)) { showErr('loginEmailErr', true); ok = false; } else showErr('loginEmailErr', false);
+  if (pass.length < 6)       { showErr('loginPassErr',  true); ok = false; } else showErr('loginPassErr',  false);
+  if (!ok) return;
+  currentUser = { name: email.split('@')[0], email };
+  closeAuth();
+  updateNavUser();
+  showToast('success', '✓  Welcome back, ' + currentUser.name + '!');
+}
+
+function handleSignup() {
+  const name  = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const user  = document.getElementById('signupUsername').value.trim();
+  const pass  = document.getElementById('signupPassword').value;
+  let ok = true;
+  if (!name)               { showErr('signupNameErr', true); ok = false; } else showErr('signupNameErr', false);
+  if (!validateEmail(email)){ showErr('signupEmailErr', true); ok = false; } else showErr('signupEmailErr', false);
+  if (user.length < 3)     { showErr('signupUserErr',  true); ok = false; } else showErr('signupUserErr',  false);
+  if (pass.length < 6)     { showErr('signupPassErr',  true); ok = false; } else showErr('signupPassErr',  false);
+  if (!ok) return;
+  currentUser = { name, email, username: user };
+  closeAuth();
+  updateNavUser();
+  showToast('success', '✓  Account created! Welcome, ' + name + '!');
+}
+
+function updateNavUser() {
+  const btn = document.getElementById('navLoginBtn');
+  if (currentUser) {
+    btn.textContent = '👤 ' + (currentUser.username || currentUser.name);
+    btn.classList.add('logged-in');
+    btn.onclick = () => { currentUser = null; btn.textContent = 'Login / Sign Up'; btn.classList.remove('logged-in'); btn.onclick = openAuth; showToast('info', 'ℹ  Logged out.'); };
+  }
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(type, msg) {
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + type;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('visible'), 3500);
+}
+
+// ===== CARDS =====
+function buildCard(ev) {
+  const meta = categoryMeta[ev.category] || categoryMeta.technical;
+  return `
+  <div class="event-card" onclick="openDetail(${ev.id})">
+    <div class="card-banner ${meta.bannerClass}">
+      <span class="card-cat-pill">${meta.label}</span>
+      <div class="banner-icon">${meta.icon}</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title">${ev.title}</div>
+      <p class="card-desc">${ev.description.substring(0,115)}…</p>
+      <div class="card-meta">
+        <div class="card-meta-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>${ev.date} · ${ev.time}</span>
+        </div>
+        <div class="card-meta-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>${ev.venue}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-register" onclick="event.stopPropagation(); handleRegister(${ev.id}, '${ev.registrationLink}')">Register</button>
+        <button class="btn-details" onclick="event.stopPropagation(); openDetail(${ev.id})">Details</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== REGISTER =====
+function handleRegister(id, link) {
+  if (!currentUser) {
+    showToast('error', '✕  Please login first to register.');
+    openAuth();
+    return;
+  }
+  showToast('success', '✓  Registration Successful! Redirecting…');
+  setTimeout(() => window.open(link, '_blank'), 1000);
+}
+
+// ===== DETAIL MODAL =====
+function openDetail(id) {
+  const ev = events.find(e => e.id === id);
+  if (!ev) return;
+  const meta = categoryMeta[ev.category] || categoryMeta.technical;
+  const banner = document.getElementById('detailBanner');
+  banner.className = 'detail-banner ' + meta.bannerClass;
+  document.getElementById('detailCatBadge').textContent = meta.label;
+  document.getElementById('detailTitle').textContent = ev.title;
+  document.getElementById('detailDesc').textContent = ev.description;
+  document.getElementById('detailDate').textContent = ev.date + ' at ' + ev.time;
+  document.getElementById('detailVenue').textContent = ev.venue;
+  document.getElementById('detailParticipants').textContent = ev.maxParticipants + ' students';
+  document.getElementById('detailDeadline').textContent = ev.registrationDeadline;
+  document.getElementById('detailOrgName').textContent = ev.organizerName;
+  document.getElementById('detailOrgContact').textContent = ev.organizerContact;
+  document.getElementById('detailOrgInitials').textContent = ev.organizerName.split(' ').map(w=>w[0]).slice(0,2).join('');
+  activeDetailLink = ev.registrationLink;
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detailModal').classList.remove('open');
+}
+
+function handleDetailRegister(e) {
+  e.preventDefault();
+  if (!currentUser) {
+    closeDetail();
+    showToast('error', '✕  Please login first to register.');
+    openAuth();
+    return;
+  }
+  showToast('success', '✓  Registration Successful! Opening form…');
+  setTimeout(() => window.open(activeDetailLink, '_blank'), 1000);
+}
+
+// ===== FILTERING =====
+function getFiltered(audience) {
+  const q   = document.getElementById('searchInput').value.toLowerCase();
+  const cat = tabState[audience];
+  return events.filter(ev => {
+    const matchAudience = ev.audience === audience;
+    const matchCat = cat === 'all' || ev.category === cat;
+    const matchSearch = !q || ev.title.toLowerCase().includes(q) || ev.description.toLowerCase().includes(q);
+    return matchAudience && matchCat && matchSearch;
+  });
+}
+
+function renderGrid(audience) {
+  const grid = document.getElementById(audience + 'Grid');
+  const filtered = getFiltered(audience);
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-events">No events found matching your criteria.</div>';
+  } else {
+    grid.innerHTML = filtered.map(buildCard).join('');
+  }
+}
+
+function filterAll() {
+  renderGrid('internal');
+  renderGrid('external');
+  const total = events.filter(ev => {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    return !q || ev.title.toLowerCase().includes(q);
+  }).length;
+  document.getElementById('totalCount').textContent = total;
+}
+
+function switchTab(audience, cat) {
+  tabState[audience] = cat;
+  document.querySelectorAll('#' + audience + 'Tabs .tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+  });
+  renderGrid(audience);
+}
+
+// ===== CLOSE ON OVERLAY CLICK =====
+document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
+document.getElementById('detailModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeDetail(); });
+
+// ===== INIT =====
+document.getElementById('totalCount').textContent = events.length;
+renderGrid('internal');
+renderGrid('external');
+</script>
+</body>
+</html>
